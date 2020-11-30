@@ -1,8 +1,12 @@
 function tree = ID3(data, originalData, features, target_attribute_name, parent_node_class)
     tree.a = {'op', 'kids', 'prediction', 'attribute', 'threshold'};
     tree.op = target_attribute_name;
-    
-    if isempty(features) == 0
+    a = target_attribute_name;
+    values = height(unique(data(:,target_attribute_name)))
+    if values <= 1
+        tree = unique(data(:,target_attribute_name));
+        return
+    else if isempty(features) == 0
         tree = parent_node_class;
         return
     else
@@ -22,6 +26,7 @@ function tree = ID3(data, originalData, features, target_attribute_name, parent_
             
             subtree = ID3(sub_data, originalData, features, target_attribute_name, tree);
             tree.kids(0) = sub_tree;
+        end
         end
     end
 end
