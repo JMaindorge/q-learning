@@ -1,0 +1,28 @@
+
+dataframe = detectImportOptions('student-mat.csv');
+preview('student-mat.csv',dataframe)
+
+%%With this function we could obtain the type of the atributes. To obtain the standard deviation it is need to be a double type.
+
+[age, Medu, Fedu, traveltime, studyltime, failures, famrel, freetime, goout, Dalc, Walc, health, absences, G1, G2, G3] = readvars('student-mat.csv');
+whos age Medu Fedu traveltime studyltime failures famrel freetime goout Dalc Walc health absences G1 G2 G3
+
+
+%%Obtain the standard deviation of the atriibutes
+
+G3sd = std(G3)
+agesd = std(age)
+G1sd = std(G1)
+G2sd = std(G2)
+Dalsd = std(Dalc)
+Fedusd = std(Fedu)
+Medusd = std(Medu)
+Walcsd = std(Walc)
+Absencessd = std(absences)
+failuressd = std(failures)
+famrelsd = std(famrel)
+freetimesd = std(freetime)
+gooutsd = std(goout)
+healthsd = std(health)
+studytimesd = std(studytime)
+traveltimesd = std(traveltime)
