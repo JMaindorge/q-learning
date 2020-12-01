@@ -7,7 +7,7 @@ count = histcounts(data(:,split_feature_num), values);
 
 for i = 1:length(values)
     
-    weighted_entropy = sum((count(i)/sum(count)) * entropy(lable(index)));
+    weighted_entropy = sum((count(i)/sum(count)) * entropy(label(index)));
     
 end
 
