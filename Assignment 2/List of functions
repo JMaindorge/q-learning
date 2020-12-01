@@ -1,0 +1,81 @@
+%%Based on the file of "Convert.m" we convert the attributes of the data set into 0,1 
+
+newsex = Convertsex(dataframe.sex)
+newsex = array2table (newsex)
+newadd=Convertadd(dataframe.address)
+newadd = array2table(newadd)
+newfam = Convertfam(dataframe.famsize)
+newfam = array2table(newfam) 
+dataframe = [dataframe newfam];
+
+%Pstatus 
+newPst = ConvertPst(dataframe.Pstatus)
+newPst = array2table(newPst) 
+dataframe = [dataframe newPst];
+
+%schoolsup
+newschoolsup = ConvertSssup(dataframe.schoolsup)
+newschoolsup = array2table(newschoolsup) 
+dataframe = [dataframe newschoolsup];
+
+famsup
+newsfamsup = Convertfamsup(dataframe.famsup)
+newsfamsup = array2table(newfamsup) 
+dataframe = [dataframe newsfamsup];
+
+paid
+newspaid = Convertpaid(dataframe.paid)
+newspaid = array2table(newspaid) 
+dataframe = [dataframe newspaid];
+%%Empieza aquí
+
+activities - Convertact
+newact = Convertact(dataframe.activities)
+newact = array2table(newact) 
+dataframe = [dataframe newact];
+
+nursery - Convertnurse
+newnurse = Convertnurse(dataframe.nursery)
+newnurse = array2table(newnurse)
+dataframe = [dataframe newnurse]
+
+higher - Converthigher
+newhigher = Converthigher(dataframe.higher)
+newhigher = array2table(newhigher)
+dataframe = [dataframe newhigher]
+
+internet - Convertinternet
+newint = Convertinternet(dataframe.internet)
+newint = array2table(newint) 
+dataframe = [dataframe newint];
+
+romantic - Convertrom
+newrom = Convertrom(dataframe.romantic)
+newrom = array2table(newrom) 
+dataframe = [dataframe newrom];
+
+#delete a column
+dataframe.columnname = []
+df2.school = []
+df2.sex = []
+df2.address = []
+df2.famsize = []
+df2.Pstatus = []
+df2.schoolsup = []
+df2.famsup = []
+df2.paid = []
+df2.activities = []
+
+
+df2.nursery = []
+df2.higher = []
+df2.internet = []
+df2.romantic = []
+
+
+
+
+
+
+
+
