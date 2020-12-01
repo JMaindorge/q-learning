@@ -1,14 +1,17 @@
 function [ent] = entropy(target_col)
-%{
-Calculate the entropy of a dataset. The only parameter of this function is 
-the target_col parameter which specifies the target column.
-%}
 
-elements = unique(target_col); %unique elements
-counts = histcounts(target_col, elements); %number of unique elements
-
-for i = 1:counts
-    ent = sum(counts(i)/sum(counts))
-
+values = unique(target_col);
+% Count the number of times a unique value appears.
+counts = zeros(1,2);
+for j = 1:length(values)
+    counts(j) = length(find(target_col == values(j)));
 end
 
+ent = zeros(1,2);
+for i = 1:length(values)
+    
+    ent(i) = -counts(i)/sum(counts) * log2(counts(i)/sum(counts));
+    
+end
+ent = sum(ent);
+end

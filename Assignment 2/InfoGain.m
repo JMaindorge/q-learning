@@ -4,20 +4,24 @@ total_entropy = entropy(label);
 % Get the unique values and indidcies of those values for given feature
 % column
 feature_col = data(:,split_feature_num);
-values = unique(feature_col,'stable');
+values = unique(feature_col);
 % Count the number of times a unique value appears.
-count = histcounts(feature_col, values);
-% For every value
+counts = zeros(1,length(feature_col));
+for j = 1:length(values)
+    counts(j) = length(find(feature_col == values(j)));
+end
+
+weighted_entropy = zeros(1,length(feature_col));
 for i = 1:length(values)
-    %Find the index of where this uniue value appears in the feature_col.
-    labels_for_unique = find(feature_col == values(i));
-    weighted_entropy = (count(i)/sum(count)) * entropy(labels(labels_for_unique));
-    %Then use the indicies to find the corresponding label values and
-    %calulate the weighted entropy.
+    %Find the corresponding label values for each unique value from the
+    %feature_col.
+    weighted_entropy(i) = (counts(i)/sum(counts)) * entropy(label(feature_col == values(i)));
+    
 end
 %Take the sum of the weighted_entropy array.
 weighted_entropy = sum(weighted_entropy);
 information_gain = total_entropy - weighted_entropy;
+end
 
 
 
