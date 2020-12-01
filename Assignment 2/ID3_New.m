@@ -1,46 +1,40 @@
-function tree = ID3_New(Examples, Target_Attribute, Attributes, Labels)
-    %Create a node
-    tree.a = {'op', 'kids', 'prediction', 'attribute', 'threshold'};
+function tree = ID3_New(Features, Labels)
+    %Examples(~ismember(Examples.('radius_mean'), value), :) = []
     
     %If all examples are the same, return the same label
-    if all(Labels(:) == Labels(1))
-        tree.prediction = Labels(1);
-    end
-    
-    %If predicting examples are empty, return the most common value from
-    %the attribute
-    if isempty(features) == 0
-        tree = parent_node_class;
+    tempLabels = Convert(table2array(Labels(:,2)));
+    if all(tempLabels(:) == tempLabels(1))
+        tree.prediction = tempLabels(1);
         return
     end
     
-    %A ← The Attribute that best classifies examples.
-    %A = InfoGain() Put the function call here
+    %a = InfoGain(Features, 31, Convert(table2array(Labels(:, 2))))
+
+    %[best_attribute, best_threshold] = InfoGain(Features, Labels);
+    %tree.attribute = best_attribute;
+    %tree.threshold = best_threshold;
     
-    %Decision Tree attribute for Root = A.
-    tree.op = A;
+    best_attribute = 'radius_mean';
     
-    a = unique(Examples(:, best_feature));
+    tree.op = best_attribute;
     
-    %For each possible value, vi, of A,
-    for v = 1 : length(a)
-        value = a(v);
-        
-        %Let Examples(vi) be the subset of examples that have the value vi for A
-        for b = 1 : Examples(best_feature)
-            if value == Examples(b, best_feature)
-                sub_data(end+1) = Examples(b, best_feature);
-            end
-        end
-        
-        % If Examples(vi) is empty Then below this new 
-        % branch add a leaf node with label = most common target value in the examples
-        if isempty(sub_data)
+    LeftSubSet = Features.(best_attribute) < 17.0;
+    LeftSubSet = Features(LeftSubSet, :);
+       
+    if ~isempty(LeftSubSet)
+        LeftSubSet = removevars(LeftSubSet, best_attribute);
+        LeftLabelsVi = Labels(ismember(LeftSubSet.('id'), Features.('id')), :);
             
+        tree.kids(1) = ID3_New(LeftSubSet, LeftLabelsVi);
+    end
+    
+    RightSubSet = Features.(best_attribute) >= 17.0;
+    RightSubSet = Features(RightSubSet, :);
         
-        %Else below this new branch add the subtree ID3 (Examples(vi), Target_Attribute, Attributes – {A})
-        else
+    if ~isempty(RightSubSet)
+        RightSubSet = removevars(RightSubSet, best_attribute);
+        RightLabelsVi = Labels(ismember(RightSubSet.('id'), Features.('id')), :);
             
-        end
+        tree.kids(2) = ID3_New(RightSubSet, RightLabelsVi);
     end
 end
