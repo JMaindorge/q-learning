@@ -1,4 +1,4 @@
-function[info_gain,threshold]= best_threshold(feature_col,label)
+function[threshold]= best_threshold(feature_col,label)
 data_entropy=entropy1(label);
 split=[];
 all_entropy=[];
