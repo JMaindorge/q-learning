@@ -1,7 +1,6 @@
 function tree = ID3_New(Features, Headers, parent_node_mode)
     tree.kids = {};
     
-    
     %If all examples are the same, return the same label
     tempLabels = Features(:,end);
     if ~isempty(tempLabels) && all(tempLabels(:) == tempLabels(1))
@@ -44,8 +43,6 @@ function tree = ID3_New(Features, Headers, parent_node_mode)
         
     if ~isempty(LeftSubSet)
         LeftSubSet(:, best_attri) = [];
-        
-        
         
         tree.kids{1} = ID3_New(LeftSubSet, Headers, parent_node_mode);
     end

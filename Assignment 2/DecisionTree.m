@@ -1,5 +1,6 @@
 function accuracy = DecisionTree(lower, upper)
     T = readtable('data.csv');
+    %T = T(randperm(size(T,1)), :);
     
     %If the upper bounds of the test is at the height of the table, use the
     %lower half for the training
