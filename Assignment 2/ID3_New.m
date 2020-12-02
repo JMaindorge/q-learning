@@ -1,4 +1,6 @@
 function tree = ID3_New(Features)
+    size(Features, 1)
+    tree.kids = cell(1,2);
     %Examples(~ismember(Examples.('radius_mean'), value), :) = []
     
     %If all examples are the same, return the same label
@@ -9,33 +11,44 @@ function tree = ID3_New(Features)
         return
     end
     
-    for i = 1:length(Features(:,end-1))            
-        InfoGain(Features, i, Features(:,end))
+    if size(Features,2) <= 1
+        return
     end
-
-    %[best_attribute, best_threshold] = InfoGain(Features, Labels);
-    %tree.attribute = best_attribute;
-    %tree.threshold = best_threshold;
     
-    best_attribute = 'radius_mean';
-    best_threshold = 17.0;
-    tree.op = best_attribute;
+    x = 0;
+    xi = 0;
+    for i = 1:size(Features, 2) - 1
+        xb = InfoGain(Features, i, Features(:,end));
+        if xb > x
+            xi = i;
+            x = xb;
+        end
+    end
     
-    LeftSubSet = Features(Features(:,2) < best_threshold, :);
-       
+    best_attri = xi
+    tree.attribute = best_attri;
+    best_thres = best_threshold(Features(:, 2),Features(:, end))
+    
+    LeftSubSet = Features(Features(:,best_attri) < best_thres, :);
+    
+    size(LeftSubSet)
+    
     if ~isempty(LeftSubSet)
-        LeftSubSet = Features;
-        LeftSubSet(:, best_attribute) = [];
-            
-        tree.kids(1) = ID3_New(LeftSubSet, LeftLabels);
+        LeftSubSet(:, best_attri) = [];
+        
+        length(LeftSubSet);
+        
+        size(LeftSubSet,1);
+        %tree.kids(1) = ID3_New(LeftSubSet);
     end
     
-    RightSubSet = Features(Features(:,2) >= best_threshold, :);
-        
+    RightSubSet = Features(Features(:,best_attri) >= best_thres, :);
+    
     if ~isempty(RightSubSet)
-        RightSubSet = Features;
-        RightSubSet(:, best_attribute) = [];
+        RightSubSet(:, best_attri) = [];
+        
+        length(RightSubSet);
             
-        tree.kids(2) = ID3_New(RightSubSet, RightLabels);
+        %tree.kids(2) = ID3_New(RightSubSet);
     end
 end
