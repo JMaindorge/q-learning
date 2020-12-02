@@ -1,20 +1,24 @@
-function tree = ID3_New(Features)
-    size(Features, 1)
-    tree.kids = cell(1,2);
-    %Examples(~ismember(Examples.('radius_mean'), value), :) = []
+function tree = ID3_New(Features, Headers, parent_node_mode)
+    tree.kids = {};
+    
     
     %If all examples are the same, return the same label
-    
     tempLabels = Features(:,end);
-    if all(tempLabels(:) == tempLabels(1))
+    if ~isempty(tempLabels) && all(tempLabels(:) == tempLabels(1))
         tree.kids = [];
+        tree.op = "";
         tree.prediction = tempLabels(1);
         return
     end
     
     if size(Features,2) <= 1
+        tree.kids = [];
+        tree.op = "";
+        tree.prediction = parent_node_mode;
         return
     end
+    
+    parent_node_mode = mode(Features(:,end));
     
     x = 0;
     xi = 0;
@@ -29,27 +33,32 @@ function tree = ID3_New(Features)
     best_attri = xi;
     tree.attribute = best_attri;
     best_thres = best_threshold(Features(:, best_attri),Features(:, end));
+    tree.threshold = best_thres;
+   
+    tree.op = Headers(best_attri);
+    
+    Headers(best_attri) = [];
+    
     
     LeftSubSet = Features(Features(:,best_attri) < best_thres, :);
-    
-    size(LeftSubSet)
-    
+        
     if ~isempty(LeftSubSet)
         LeftSubSet(:, best_attri) = [];
         
-        length(LeftSubSet);
         
-        size(LeftSubSet,1);
-        tree.kids{1} = ID3_New(LeftSubSet);
+        
+        tree.kids{1} = ID3_New(LeftSubSet, Headers, parent_node_mode);
     end
     
     RightSubSet = Features(Features(:,best_attri) >= best_thres, :);
     
     if ~isempty(RightSubSet)
         RightSubSet(:, best_attri) = [];
-        
-        length(RightSubSet);
-            
-        tree.kids{2} = ID3_New(RightSubSet);
+                    
+        if isempty(tree.kids)
+            tree.kids{1} = ID3_New(RightSubSet, Headers, parent_node_mode);
+        else
+            tree.kids{2} = ID3_New(RightSubSet, Headers, parent_node_mode);
+        end
     end
 end
