@@ -7,6 +7,7 @@ function tree = ID3_New(Features)
     
     tempLabels = Features(:,end);
     if all(tempLabels(:) == tempLabels(1))
+        tree.kids = [];
         tree.prediction = tempLabels(1);
         return
     end
@@ -25,9 +26,9 @@ function tree = ID3_New(Features)
         end
     end
     
-    best_attri = xi
+    best_attri = xi;
     tree.attribute = best_attri;
-    best_thres = best_threshold(Features(:, 2),Features(:, end))
+    best_thres = best_threshold(Features(:, best_attri),Features(:, end));
     
     LeftSubSet = Features(Features(:,best_attri) < best_thres, :);
     
@@ -39,7 +40,7 @@ function tree = ID3_New(Features)
         length(LeftSubSet);
         
         size(LeftSubSet,1);
-        %tree.kids(1) = ID3_New(LeftSubSet);
+        tree.kids{1} = ID3_New(LeftSubSet);
     end
     
     RightSubSet = Features(Features(:,best_attri) >= best_thres, :);
@@ -49,6 +50,6 @@ function tree = ID3_New(Features)
         
         length(RightSubSet);
             
-        %tree.kids(2) = ID3_New(RightSubSet);
+        tree.kids{2} = ID3_New(RightSubSet);
     end
 end

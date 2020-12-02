@@ -7,6 +7,6 @@ function d = DecisionTree()
 
     variables = T{:,2:end};
     variables(:,end + 1) = label;
-    
-    ID3_New(variables);
+
+    DrawDecisionTree(ID3_New(variables), "WCBC");
 end
