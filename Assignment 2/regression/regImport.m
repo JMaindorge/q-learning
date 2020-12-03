@@ -1,3 +1,4 @@
+function [f, l, h] = regImport()
 opts = spreadsheetImportOptions("NumVariables", 46);
 
 % Specify sheet and range
@@ -17,6 +18,12 @@ dataframebinary = readtable("dataframebinary.xlsx", opts, "UseExcel", false);
 dataframebinary = table2cell(dataframebinary);
 numIdx = cellfun(@(x) ~isnan(str2double(x)), dataframebinary);
 dataframebinary(numIdx) = cellfun(@(x) {str2double(x)}, dataframebinary(numIdx));
+h = opts.VariableNames;
 clear opts
-y=dataframebinary(:,1);
-x=dataframebinary(:,2:45);
+
+% Output data
+l = dataframebinary(:,1);
+f = dataframebinary(:,2:45);
+l = cell2mat(l);
+f = cell2mat(f);
+end

@@ -1,4 +1,4 @@
-function tree = ID3_New(Features, labels, parent_node_mode)
+function tree = ID3_New(Features, labels, Header, parent_node_mode)
     tree.kids = {};
     
     %If all examples are the same, return the same label
@@ -21,12 +21,12 @@ function tree = ID3_New(Features, labels, parent_node_mode)
     best_attri = computeOptimalSplitRegression(num2cell(Features), num2cell(labels));
     
     tree.attribute = best_attri;
-    best_thres = best_threshold(Features(:, best_attri), labels);
+    best_thres = 0.5;
     tree.threshold = best_thres;
    
-    tree.op = "test";
-%     
-%     Headers(best_attri) = [];
+    tree.op = Header(best_attri);
+    
+    Header(best_attri) = [];
     
     
     LeftSubSet = Features(Features(:,best_attri) < best_thres, :);
@@ -34,7 +34,7 @@ function tree = ID3_New(Features, labels, parent_node_mode)
     if ~isempty(LeftSubSet)
         LeftSubSet(:, best_attri) = [];
         
-        tree.kids{1} = ID3_New(LeftSubSet, labels, parent_node_mode);
+        tree.kids{1} = ID3_New(LeftSubSet, labels, Header, parent_node_mode);
     end
     
     RightSubSet = Features(Features(:,best_attri) >= best_thres, :);
@@ -43,9 +43,9 @@ function tree = ID3_New(Features, labels, parent_node_mode)
         RightSubSet(:, best_attri) = [];
                     
         if isempty(tree.kids)
-            tree.kids{1} = ID3_New(RightSubSet, labels, parent_node_mode);
+            tree.kids{1} = ID3_New(RightSubSet, labels, Header, parent_node_mode);
         else
-            tree.kids{2} = ID3_New(RightSubSet, labels, parent_node_mode);
+            tree.kids{2} = ID3_New(RightSubSet, labels, Header, parent_node_mode);
         end
     end
 end

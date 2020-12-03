@@ -65,6 +65,6 @@ for i=1:nAttrs
 end
 %calculate the coefficient of variation for the 2 branches
 attr=maxattr;
-cv_true=cell2mat(sdtrue(maxattr))/ cell2mat(meantruecell(maxattr))*100;
-cv_false=cell2mat(sdfalse(maxattr))/ cell2mat(meanfalsecell(maxattr))*100;
+% cv_true=cell2mat(sdtrue(maxattr))/ cell2mat(meantruecell(maxattr))*100;
+% cv_false=cell2mat(sdfalse(maxattr))/ cell2mat(meanfalsecell(maxattr))*100;
 end
