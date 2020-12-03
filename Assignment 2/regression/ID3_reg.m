@@ -1,4 +1,4 @@
-function tree = ID3_reg(Features, labels, Header, parent_node_mode)
+function tree = ID3_reg(Features, labels, Header, parent_node_mean)
     tree.kids = {};
     
     %If all examples are the same, return the same label
@@ -12,18 +12,18 @@ function tree = ID3_reg(Features, labels, Header, parent_node_mode)
     if size(Features,2) <= 1
         tree.kids = [];
         tree.op = "";
-        tree.prediction = parent_node_mode;
+        tree.prediction = parent_node_mean;
         return
     end
     
-    parent_node_mode = mode(labels);
+    parent_node_mean = mean(labels);
     
     best_attri = computeOptimalSplitRegression(num2cell(Features), num2cell(labels));
     
     if best_attri == 0
         tree.kids = [];
         tree.op = '';
-        tree.prediction = parent_node_mode;
+        tree.prediction = parent_node_mean;
         return
     end
     
@@ -41,7 +41,7 @@ function tree = ID3_reg(Features, labels, Header, parent_node_mode)
     if ~isempty(LeftSubSet)
         LeftSubSet(:, best_attri) = [];
         
-        tree.kids{1} = ID3_reg(LeftSubSet, LeftSubSet_labels, Header, parent_node_mode);
+        tree.kids{1} = ID3_reg(LeftSubSet, LeftSubSet_labels, Header, parent_node_mean);
     end
     
     RightSubSet = Features(Features(:,best_attri) >= best_thres, :);
@@ -51,9 +51,9 @@ function tree = ID3_reg(Features, labels, Header, parent_node_mode)
         RightSubSet(:, best_attri) = [];
                     
         if isempty(tree.kids)
-            tree.kids{1} = ID3_reg(RightSubSet, RightSubSet_labels, Header, parent_node_mode);
+            tree.kids{1} = ID3_reg(RightSubSet, RightSubSet_labels, Header, parent_node_mean);
         else
-            tree.kids{2} = ID3_reg(RightSubSet, RightSubSet_labels, Header, parent_node_mode);
+            tree.kids{2} = ID3_reg(RightSubSet, RightSubSet_labels, Header, parent_node_mean);
         end
     end
 end
