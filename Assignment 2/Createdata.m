@@ -268,4 +268,5 @@ df4.Mjob = []
 df4.Fjob = []
 df4.reason = []
 
-writetable(df4,"newbinary.csv")
+%%writetable(df4,"newbinary.csv")
+>> writetable(F,"dataframebinary.xlsx",'Sheet',1)
